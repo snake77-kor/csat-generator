@@ -32,11 +32,24 @@ Requirements:
 Format: [{"type":"글의 주장", "question":"다음 글에서 필자가 주장하는 바로 가장 적절한 것은?", "options":["(1)...", "(2)...", ...], "answer_index":1, "explanation":"..."}]
 Text: {text}`,
 
-    'underlying': `Role: CSAT Creator. Create ONE "Implication" (Underlying Meaning) question.
-Process:
-1. **Target Selection**: Identify a metaphor representing the Main Idea. Mark it with <u>tags</u> in "modified_text".
-2. **Correct Answer**: Paraphrase the figurative meaning abstractly (English).
-3. **Distractors**: Literal Interpretation (Trap), Topic Error.
+    'underlying': `당신은 한국 수능 영어 출제 위원입니다. 주어진 영문 텍스트를 분석하여 수능 21번 유형인 '밑줄 친 부분의 함축적 의미 추론 문제'를 1개 생성하십시오.
+
+**Step 1: 텍스트 요지 및 타깃 구문 분석**
+- 글의 메인 주제(Main Idea)를 파악하십시오.
+- 본문 내에서 주제를 비유적(Metaphorical), 관용적, 또는 추상적으로 압축하여 표현한 2~6단어 길이의 구(Phrase)나 절구문을 하나 찾아 <u> 태그로 밑줄(Target)을 지정하십시오.
+- 이 밑줄 친 부분이 필자의 요지를 대변(긍정)하는지, 필자의 비판 대상(부정)을 대변하는지 논리적 기능을 100% 명확히 확인하십시오.
+
+**Step 2: 기만적인 5지선다(Options 1~5) 영문 선지 생성**
+- **정답 선지:** 밑줄 친 부분의 문맥상 '진짜 숨은 의미'를 본문의 핵심어를 사용해 영어로 풀어쓰십시오. (단순 번역이 아닌 파라프레이징)
+- **오답 1 (직역 트랩/Literal Trap):** [가장 중요] 밑줄 친 구문에 쓰인 단어들의 **표면적/사전적 의미**만을 활용해, 문맥과 전혀 상관없는 그럴싸한 선지를 1~2개 만드십시오.
+- **오답 2 (반대 논리):** 밑줄 친 부분의 논리적 방향(긍정/부정)과 '정반대'되는 내용을 선지로 구성하십시오.
+- **오답 3 (Word Salad):** 본문에 자주 등장한 단어들의 조합이지만 논리적 인과관계가 맞지 않는 문장.
+- **주의사항:** 선지 길이는 모두 비슷하게 맞추고 모두 문법적으로 온전한 영어 구(Phrase) 형태로 통일하십시오.
+
+**Step 3: 출력 포맷 및 해설**
+- 문제 지시문, <u> 마크업이 포함된 "modified_text", 5개의 영문 선택지, 정답 인덱스, 그리고 해설을 출력합니다.
+- 해설에는 왜 정답인지 뿐만 아니라, 1차원적 직역 선지(Literal Trap)가 왜 매력적인 오답인지 구체적으로 설명하십시오.
+
 Format: [{"type":"함축 의미", "question":"밑줄 친 부분이 다음 글에서 의미하는 바로 가장 적절한 것은?", "options":["Option1", "Option2", "Option3", "Option4", "Option5"], "answer_index":3, "explanation":"...", "modified_text":"Full text with <u>underlined phrase</u>..."}]
 Text: {text}`,
 
