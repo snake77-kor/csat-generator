@@ -71,72 +71,174 @@ Requirements:
 Format: [{"type":"어법", "question":"다음 글의 밑줄 친 부분 중, 어법상 틀린 것은?", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"...", "modified_text":"Full text with ① <u>word</u> markings..."}] 
 Text: {text}`,
 
-    'vocabulary': `Role: CSAT Creator. Create ONE "Vocabulary" question.
-Requirements: **HIGH DIFFICULTY LOGIC**.
-1. **Global Coherence**: The target word must be a KEYWORD for the Main Idea. The WRONG choice (answer) must **contradict** the main flow.
-2. **Underlining**: Mark 5 words with circled numbers ①, ②, ③, ④, ⑤ and <u>underline</u>.
-Format: [{"type":"어휘", "question":"다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"...", "modified_text":"Full text with ① <u>word</u> markings..."}]
+    'vocabulary': `당신은 한국 수능 영어(CSAT) 출제 위원입니다. 주어진 영어 지문을 바탕으로 고등학생 수준의 '어휘 추론 문제(밑줄 친 낱말의 쓰임이 적절하지 않은 것 찾기)'를 생성하십시오.
+
+**Step 1: 텍스트 논리 분석**
+- 지문의 주제와 글의 흐름(긍정/부정, 인과관계, 대조)을 분석하십시오.
+
+**Step 2: 타깃 단어 5개 선정**
+- 지문의 전개상 논리적으로 중요한 의미를 지닌 형용사, 동사, 부사 5개를 선정하십시오. (단순한 문법적 기능어 제외)
+- 단어는 '주제문(Topic Sentence) 내 핵심어', '연결사(However, Therefore 등) 직후의 동사/형용사', '대조되는 개념(A vs B)'을 설명하는 단어 위주로 선정합니다.
+- 단어들의 위치는 지문 전체에 고르게 분포해야 합니다.
+
+**Step 3: 오답(정답 선지) 생성**
+- 선정된 5개의 단어 중 **단 1개의 단어만 문맥과 정반대되는 단어(반의어)로 교체**하십시오. (예: increase -> decrease, benefit -> drawback, accept -> deny)
+- 교체된 단어는 문법적으로는 완벽해야 하지만, 앞뒤 문맥의 인과관계나 글의 주제와 완전히 모순(논리적 호응 파괴)되어야 합니다.
+- 나머지 4개의 단어는 원문 그대로 유지하거나 문맥에 맞는 유의어로 둡니다.
+
+**[오답 변형 방식 예시 (반드시 참고할 것)]**
+- (예시 1 - 논리적 방향 왜곡)
+  기존 문맥: "유기농 농법은 화학물질을 못 써서 비용이 많이 들고 잡초 통제가 어렵다는 단점이 있다."
+  원문 텍스트: "... there are ③ drawbacks to the extensive use of ..."
+  변형 결과: "... there are ③ <u>benefits</u> to the extensive use of ..." (단점을 장점으로 왜곡하여 오답(정답 선지)으로 만듦)
+
+- (예시 2 - 인과관계 파괴)
+  기존 문맥: "고고학자들이 유물을 연구할 시간만 충분히 주어진다면, 역사적 지식은 손실되지(lost) 않는다."
+  원문 텍스트: "... no historical knowledge is ② lost!"
+  변형 결과: "... no historical knowledge is ② <u>found</u>!" (손실되지 않는다는 인과관계를 발견되지 않는다고 반대로 왜곡)
+
+**Step 4: 기호 표시 및 출력**
+- 선정된 5개 단어(정답 1개, 오답 4개) 앞에 원문자 ①, ②, ③, ④, ⑤ 를 붙이고 <u> 태그로 감싸서 표시하십시오. (예: ① <u>drawbacks</u>)
+
+Format: [{"type":"어휘", "question":"다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"원래 어떤 단어가 들어가야 맞고 대체된 단어가 왜 논리적으로 틀렸는지 구체적인 인과관계를 들어 해설 추가", "modified_text":"Full text with ① <u>word</u> markings..."}]
 Text: {text}`,
 
-    'blank': `Role: CSAT Creator. Create A SET OF 4 "Blank Inference" questions based on the text.
-Requirements:
-1. **Quantity**: Exactly **4 distinct questions**.
-2. **Variety**: Word, Phrase, Clause, Transition/Conclusion.
-3. **Paraphrasing**: The Correct Option MUST be a **PARAPHRASED** version of the original text.
-Format: [
-  {"type":"빈칸 추론 (단어)", "target":"(Original Word)", "question":"다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.", "options":["Paraphrased Answer", "Distractor..."], "answer_index":1, "explanation":"..."},
-  {"type":"빈칸 추론 (구)", "target":"(Original Phrase)", "question":"다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.", "options":["Paraphrased Answer", "Distractor..."], "answer_index":1, "explanation":"..."},
-  {"type":"빈칸 추론 (절)", "target":"(Original Clause)", "question":"다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.", "options":["Paraphrased Answer", "Distractor..."], "answer_index":1, "explanation":"..."},
-  {"type":"빈칸 추론 (연결사)", "target":"(Original Transition)", "question":"다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.", "options":["Answer", "Distractor..."], "answer_index":1, "explanation":"..."}
+    'blank': `당신은 한국 대학수학능력시험(CSAT) 영어 영역의 최고 전문 출제 위원입니다. 
+주어진 영문 텍스트를 철저히 분석하여, 실제 수능과 동일한 수준의 고도의 '빈칸 추론 문제'를 1개 생성하십시오.
+
+### [업무 지시 1: 빈칸의 위치 및 길이 선정]
+1. (길이 결정) 지문의 논리적 난이도에 따라 빈칸의 길이를 [핵심 단어 / 긴 구(Phrase) / 절(Clause)] 중 하나로 결정하십시오.
+2. (위치 결정) 빈칸은 반드시 글의 '주제문(Topic Sentence)', '은유적/함축적 결론', 혹은 핵심적인 '인과관계'에 해당하는 문장에 뚫어야 합니다.
+
+### [업무 지시 2: 선지(Options) 구성 알고리즘 🌟]
+문제의 타당성은 매력적인 오답에 달려 있습니다. 선지 5개는 반드시 다음 원칙을 따르십시오.
+1. 형태 및 길이의 일치 (필수 원칙): 수험생이 길이 차이로 정답을 유추할 수 없도록, 5개 선지 모두 비슷한 길이와 동일한 문법적 형태(예: 모두 동명사구(ing), 모두 투부정사(to-v) 형태 등)를 철저하게 유지하십시오.
+2. 정답 선지 (1개): 
+   - 원문(Original Text)을 그대로 쓰지 말고, 동일한 의미의 다른 핵심어와 구조로 '패러프레이징(Paraphrasing)' 하십시오.
+3. 매력적인 오답 선지 구성 (4개): 
+   - [오답 유형 1 - Word Salad (최소 2개 포함)]: 지문에 여러 번 등장한 '핵심 키워드'들을 본문에서 그대로 가져와 선지를 구성하되, 인과관계를 거꾸로 뒤집거나 논리적 방향을 엉뚱하게 짜깁기하여 가장 매력적인 함정을 만드십시오.
+   - [오답 유형 2 - 반대 방향]: 글의 주제와 '정반대'되는 내용을 담은 선지를 생성하여 오독한 수험생을 유도하십시오.
+   - [오답 유형 3 - 상식적 함정]: 배경지식으로는 맞는 말이지만, '지문 내에는 언급되지 않은' 그럴싸한 선지를 만드십시오.
+
+### [출력 예시 (참고용)]
+[
+  {
+    "type": "빈칸 추론",
+    "target": "원문에서 빈칸으로 뚫릴 본래의 텍스트 문자열",
+    "question": "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.",
+    "options": [
+      "오답 선지 1 (Word Salad 등)",
+      "오답 선지 2 (반대 방향 등)",
+      "정답 선지 (Word Salad 등과 길이가 엇비슷하고 문법 형태가 같게 구성할 것)",
+      "오답 선지 3",
+      "오답 선지 4"
+    ],
+    "answer_index": 3,
+    "explanation": "정답이 되는 이유와 함께, 각 오답 선지가 왜 매력적인 함정인지 해설..."
+  }
 ]
+
+### [출력 형식 (JSON)]
+앱이 자동화된 처리를 할 수 있도록 오직 위의 출력 예시와 동일한 JSON 객체 배열 형식만 반환하십시오. (Markdown 코드 블록 없이 순수 JSON만 반환)
+
 Text: {text}`,
 
-    'irrelevant': `Role: CSAT Creator. Create ONE "Irrelevant Sentence" question.
-Numbering Rule: "The Last-5 Rule"
-1. Identify the LAST 5 sentences of the text.
-2. Mark them as ①, ②, ③, ④, ⑤ (Circled Numbers).
-3. Do NOT number the Intro part.
-4. Insert an "Irrelevant Sentence" (Distractor) at position ③ or ④.
-   - Distractor Logic: Same Keyword, but Unrelated Predicate/Topic.
-Format: [{"type":"무관한 문장", "question":"다음 글에서 전체 흐름과 관계 없는 문장은?", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"...", "modified_text":"Intro... ① Sentence... ② Sentence... ③ Distractor... ④ Sentence... ⑤ Sentence..."}]
+    'irrelevant': `당신은 한국 수능 영어 출제 위원입니다. 주어진 영문 텍스트를 분석하여 수능 35번 유형의 '전체 흐름과 관계 없는 문장 찾기' 문제를 1개 생성하십시오.
+
+**Step 1: 지문 주제 및 핵심어 분석**
+- 글의 핵심 소재(Topic)와 필자의 주장/방향성을 파악하십시오.
+
+**Step 2: 기만적인 무관한 문장(Distractor) 생성**
+- 추출된 핵심 소재(단어)를 반드시 포함하되, 다음 중 하나의 방식을 사용하여 글의 흐름을 교묘하게 깨는 영문장 1개를 새로 창작하십시오.
+  * 방식 A (초점 이탈): 소재는 같으나 다른 분야/상황으로 이야기를 이탈시킴
+  * 방식 B (방향 반전): 소재는 같으나 필자의 주장이나 논리 방향과 정반대되는 내용을 씀
+  * 방식 C (논리 왜곡): 본문 키워드들을 조합했으나 인과관계나 논리가 모순되는 문장
+- **[위장 필수]** 창작할 1개의 무관한 문장에는 반드시 삽입될 위치의 앞/뒤 문장에 쓰인 핵심 단어(명사, 동사)를 1~2개 포함시켜 자연스럽게 보이도록 위장(카멜레온 효과)하십시오.
+
+**Step 3: 문장 삽입 및 선택지(①~⑤) 구성**
+- 글의 첫 1~2문장(도입부)은 주제를 알려주는 기준점이므로 절대 건드리지 말고 선택지 번호(①)도 매기지 마십시오.
+- 글의 중후반부(주로 ③번이나 ④번 위치)에 Step 2에서 구상한 '무관한 문장'을 삽입하십시오.
+- 도입부 이후 본문을 5개의 구획(문장)으로 나누어 문장 시작 부분에 ①, ②, ③, ④, ⑤ 번호를 매기십시오. (창작된 무관한 문장이 그 중 하나의 번호를 가져야 합니다.)
+
+**Step 4: 검증 및 출력 포맷**
+- 넣었던 정답 문장(무관한 문장)을 다시 뺐을 때, 그 앞 문장과 뒷문장이 지시어(This, Such 등)나 논리적 흐름 상 완벽하고 자연스럽게 이어지는지 검증하십시오.
+- 해설에는 1) 왜 이 문장이 전체 주제와 안 맞는지, 2) 이 문장을 뺐을 때 앞뒤 문장이 어떻게 논리적으로 이어지는지를 명확히 설명하십시오.
+
+Format: [{"type":"무관한 문장", "question":"다음 글에서 전체 흐름과 관계 없는 문장은?", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"...", "modified_text":"Intro... ① Sentence... ② Sentence... ③ Distractor(Irrelevant Sentence)... ④ Sentence... ⑤ Sentence..."}]
 Text: {text}`,
 
-    'sequence': `Role: CSAT Creator. Create ONE "Order" question.
-1. **Introduction (Box)**: Use the first 20-25% of the text.
-2. **Segmentation Strategy (Critical)**:
-   - Divide the remaining text into (A), (B), (C).
-   - **Balance**: Ensure (A), (B), and (C) correspond to roughly similar lengths (visually balanced). Avoid making one segment extremely short or long.
-   - **Logical Clues**: The *start* of each segment (or the logic linking to it) SHOULD ideally contain a clue (Connectives like 'However', 'Therefore'; Pronouns like 'He', 'They'; Demonstratives like 'This', 'Such').
-   - If intrinsic clues are weak, you may slightly start the segment with a strong sentence that connects to the previous part.
-3. **Logic**: Determine the logical order.
-4. **Options - STRICT RULE**: You must output EXACTLY these options (no others allowed):
-   (1) (A) - (C) - (B)
-   (2) (B) - (A) - (C)
-   (3) (B) - (C) - (A)
-   (4) (C) - (A) - (B)
-   (5) (C) - (B) - (A)
-   *Note: (A) - (B) - (C) is FORBIDDEN.*
+    'sequence': `당신은 한국 수능 영어 출제 위원입니다. 주어진 영문 텍스트를 분석하여, 수능 36~37번 유형의 '글의 순서 추론 문제'를 1개 생성하십시오.
+
+**Step 1: 텍스트 논리 분석 및 단락 분할**
+- 글의 서론에 해당하는 첫 1~2문장을 [주어진 글 (box)]로 분리하십시오.
+- 나머지 텍스트를 논리적 흐름이 끊기지 않는 선에서 (A), (B), (C) 세 단락으로 나누십시오. (단락 분량은 각각 2~4문장으로 시각적 균형을 어느정도 맞출 것)
+
+**Step 2: 강력한 연결 단서 확보 (매우 중요)**
+- 단락을 자를 때, (A), (B), (C) 중 최소 2개 단락의 첫 부분에는 앞 단락의 내용을 이어받는 명확한 논리적 단서가 포함되어야 합니다.
+  * 단서 유형 1 (명시적 연결사): However, Therefore, Thus, For example, In contrast 등
+  * 단서 유형 2 (지시어/대명사): This, These, Such + 명사, The + 명사, He/They/It 등
+
+**Step 3: 문제 포맷 생성**
+- 정답 순서를 논리적으로 먼저 확정하십시오. (예: 주어진 글 -> C -> B -> A)
+- 단락 (A), (B), (C)의 원래 순서를 섞어서 제시하십시오.
+- **[STRICT RULE] 오답 선택지는 반드시 5개로, 아래의 실제 수능 포맷 배열로만 생성해야 합니다.** (주의: (A)-(B)-(C)는 정답/오답 모두에서 절대 사용 금지)
+  ① (A) - (C) - (B)
+  ② (B) - (A) - (C)
+  ③ (B) - (C) - (A)
+  ④ (C) - (A) - (B)
+  ⑤ (C) - (B) - (A)
+
+**Step 4: 해설 출력 (논리적 연결 고리 강조)**
+- 정답과 함께, (B)의 'This'가 박스의 어떤 명사를 받는지, 혹은 (C)의 'However'가 (A)의 어떤 내용을 뒤집는지 등 '단락 간의 명시적 단서'를 중심으로 왜 그 순서여야만 하는지 매우 구체적으로 해설에 작성하십시오.
+
 Format: [{"type":"글의 순서", "question":"주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?", "options":["(A) - (C) - (B)", "(B) - (A) - (C)", "(B) - (C) - (A)", "(C) - (A) - (B)", "(C) - (B) - (A)"], "answer_index":3, "explanation":"...", "box":"...", "A":"...", "B":"...", "C":"..."}]
 Text: {text}`,
 
-    'insertion': `Role: CSAT Creator. Create ONE "Insertion" question using the "3-Step Extraction Algorithm".
-1. **Extraction Strategy**: Identify a 'Key Sentence' in the LAST 5 sentences (Signal words highlight).
-2. **Layout & Numbering**:
-   - Extract the 'Key Sentence' into the 'box'.
-   - Mark the remaining positions in the last part as ①, ②, ③, ④, ⑤.
-3. **Explanation**: Focus on Logical Gap.
+    'insertion': `당신은 한국 수능 영어 출제 위원입니다. 주어진 영문 텍스트를 분석하여 수능 38~39번 유형의 '문장 삽입 추론 문제'를 1개 생성하십시오.
+
+**Step 1: 타깃 문장(주어진 문장) 선정**
+- 본문의 중간 이후에 위치한 문장 중, 1) 역접/인과의 연결사(However, Therefore 등)가 있거나, 2) 강력한 지시어(This, Such + 명사 등)가 포함된 문장 1개를 골라 텍스트에서 분리하십시오. 
+- 이 문장을 [주어진 글] 박스에 들어갈 문장으로 지정하십시오.
+
+**Step 2: 논리적 단절 검증**
+- 분리해 낸 문장의 자리를 비웠을 때, 앞 문장과 뒷문장 사이에 의미상 명확한 '논리적 단절(흐름의 어색함)'이나 '지시어의 대상 부재'가 발생하는지 확인하십시오.
+
+**Step 3: 선택지 ①~⑤ 배치**
+- 첫 1~2문장은 글의 도입부이므로 그대로 둡니다. (절대 도입부에 번호 할당 금지)
+- 도입부 이후부터 마침표(.)가 끝난 직후, 새로운 문장이 시작되는 자리에 ①, ②, ③, ④, ⑤ 기호를 삽입하십시오. 
+- 추출된 문장이 원래 있던 자리가 정답 번호가 되게 하십시오.
+
+**Step 4: 출력 포맷 및 해설**
+- 문제 지시문, [주어진 글] 박스, ①~⑤ 번호가 포함된 본문을 출력하십시오.
+- 정답을 제시하고, "왜 주어진 문장이 반드시 그 자리에 들어가야만 하는지"를 앞뒤 문장의 '지시어'와 '연결사', '논리적 흐름'을 근거로 명확하고 상세하게 해설하십시오.
+
 Format: [{"type":"문장 넣기", "question":"글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.", "options":["①", "②", "③", "④", "⑤"], "answer_index":3, "explanation":"...", "box":"Target Sentence...", "modified_text":"Intro... ① ... ② ... ③ ... ④ ... ⑤ ..."}]
 Text: {text}`,
 
-    'summary': `Role: CSAT Creator. Create ONE "Summary" question.
-1. **Language**: The Summary Sentence MUST be in **ENGLISH**.
-2. **Options**: The words for (A) and (B) MUST be in **ENGLISH**.
-3. **Structure**: Create a one-sentence summary with two blanks.
-4. **Blank Format - CRITICAL**: You MUST use exactly this format for blanks:
-   - First blank: \`(A) ____________________\` (Long underline after (A))
-   - Second blank: \`(B) ____________________\` (Long underline after (B))
-5. **Option Pairing**: Create 5 pairs of (A) - (B).
-Format: [{"type":"요약문", "question":"다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B)에 들어갈 말로 가장 적절한 것은?", "options":["(A) word - (B) word", ...], "answer_index":1, "explanation":"...", "summary_text":"(ENGLISH Summary Sentence with (A) and (B) blanks included...)"}]
+    'summary': `당신은 한국 수능 영어 출제 위원입니다. 주어진 영문 텍스트를 분석하여, 수능 40번 유형의 '요약문 추론 문제'를 1개 생성하십시오.
+
+**Step 1: 논리 구조 파악**
+- 텍스트가 '대조/비교 (A vs B)', '인과 관계 (Cause & Effect)', '통념 비판 및 역접 (Myth vs Truth)' 중 어느 구조인지 파악하십시오.
+
+**Step 2: 요약문 작성 및 빈칸 설정**
+- 지문 전체의 핵심 주제를 포괄하는 하나의 요약문(1문장, 20~30단어 내외, 반드시 **ENGLISH**)을 작성하십시오.
+- 요약문 내에서 논리적으로 가장 중요한 명사, 동사, 또는 형용사 두 곳을 비워 빈칸 (A)와 (B)로 만드십시오.
+- **주의:** 정답으로 들어갈 단어는 원문에 명시된 단어를 그대로 쓰지 말고 반드시 **동의어(Paraphrasing)**나 **상위 개념(Abstraction)**으로 치환하십시오.
+- **빈칸 포맷 (필수 준수):** 빈칸은 반드시 아래와 같이 긴 밑줄로 표시해야 합니다.
+  - First blank: \`(A) ____________________\`
+  - Second blank: \`(B) ____________________\`
+
+**Step 3: 5지 선다형 오답(Distractor) 구성**
+- 정답 1개와 매력적인 오답 4개를 생성하십시오. (모든 단어는 **ENGLISH**)
+- 선지의 형태는 반드시 \`(A) 답안 - (B) 답안\` 구조여야 합니다.
+- **[오답 생성 알고리즘]**
+  1. 반대 방향 오답 (1~2개): 지문의 논리와 **정반대**되는 단어 배치
+  2. 본문 단어 함정형 (Word Salad) (1~2개): 지문에 자주 등장한 단어지만 요약문 문맥에는 엉뚱한 단어 쌍
+  3. 부분 정답형 오답 (1개): (A)는 정답과 유사하지만 (B)가 논리적으로 틀린 단어
+
+**Step 4: 출력 포맷 (JSON)**
+- 문제 지시문, 본문 텍스트, 요약문 박스, 1~5번 선택지, 정답, 상세한 해설(원문의 어떤 문장이 (A), (B)의 근거가 되었는지 명시)을 포함하여 오직 아래의 JSON 배열 포맷으로 출력하십시오.
+Format: [{"type":"요약문", "question":"다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B)에 들어갈 말로 가장 적절한 것은?", "options":["(A) word - (B) word", ...], "answer_index":1, "explanation":"...", "summary_text":"(ENGLISH Summary Sentence with EXACTLY (A) ____________________ and (B) ____________________ included)"}]
 Text: {text}`
 };
 
